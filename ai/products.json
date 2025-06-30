@@ -1,0 +1,22 @@
+[
+    {
+        "image": "minimalist_vitamin_b5.jpg",
+        "name": "Minimalist Vitamin B5 Moisturizer",
+        "price": "₹331",
+        "url": "https://www.amazon.in/Minimalist-Vitamin-Absorbing-Lightweight-Moisturizer/dp/B09Q3MWP2S/?_encoding=UTF8&ref_=pd_hp_d_atf_dealz_sv"
+    },
+    {
+        "id": "product2",
+        "name": "Classic Canvas Backpack",
+        "price": "₹1,499",
+        "image": "product2.jpg",
+        "url": "https://example.com/product2"
+    },
+    {
+        "id": "product3",
+        "name": "Black Office Tote",
+        "price": "₹2,499",
+        "image": "product3.jpg",
+        "url": "https://example.com/product3"
+    }
+]
