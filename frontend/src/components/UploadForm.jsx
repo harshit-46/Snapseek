@@ -1,7 +1,7 @@
 // src/components/UploadForm.jsx
 import React, { useState } from 'react';
 import axios from 'axios';
-import ResultCard from './ResultCard';
+import Results from './Results';
 
 const UploadForm = () => {
     const [image, setImage] = useState(null);
@@ -31,7 +31,7 @@ const UploadForm = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
                 {results.map((item, idx) => (
-                    <ResultCard key={idx} product={item} />
+                    <Results key={idx} product={item} />
                 ))}
             </div>
         </div>

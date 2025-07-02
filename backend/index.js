@@ -11,7 +11,10 @@ app.use(cors());
 const upload = multer({ dest: "uploads/" });
 
 app.post("/upload", upload.single("image"), async (req, res) => {
-    const imagePath = req.file.path;
+    const imagePath = req.file?.path;
+    if (!imagePath) {
+        return res.status(400).json({ error: "No file uploaded" });
+    }
 
     try {
         const form = new FormData();
