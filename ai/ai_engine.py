@@ -9,27 +9,45 @@ from io import BytesIO
 app = Flask(__name__)
 CORS(app)
 
+# Load CLIP model
 device = "cuda" if torch.cuda.is_available() else "cpu"
 model, preprocess = clip.load("ViT-B/32", device=device)
 
-with open("products.json", "r") as f:
+# Load product metadata
+with open("products.json", "r", encoding='utf-8') as f:
     products = json.load(f)
 
-embeddings = np.load("embeddings.npy")
-index = faiss.read_index("index.faiss")
+# Load image embeddings and FAISS index
+try:
+    embeddings = np.load("embeddings.npy")
+    index = faiss.read_index("index.faiss")
+except Exception as e:
+    print(f"Failed to load index or embeddings: {e}")
+    exit()
 
 @app.route("/match", methods=["POST"])
 def match_image():
+    if "image" not in request.files:
+        return jsonify({"error": "No image file found in request"}), 400
+
     file = request.files["image"]
-    img = preprocess(Image.open(BytesIO(file.read()))).unsqueeze(0).to(device)
+    if file.filename == "":
+        return jsonify({"error": "Empty filename"}), 400
 
-    with torch.no_grad():
-        query_vec = model.encode_image(img).cpu().numpy().astype("float32")
+    try:
+        img = preprocess(Image.open(BytesIO(file.read())).convert("RGB")).unsqueeze(0).to(device)
 
-    _, indices = index.search(query_vec, k=5)
-    matches = [p for i in indices[0] for p in products if p["image"] == p["image"]]
+        with torch.no_grad():
+            query_vec = model.encode_image(img).cpu().numpy().astype("float32")
 
-    return jsonify({"matches": matches})
+        _, indices = index.search(query_vec, k=5)
+        matched_indices = indices[0]
+
+        matches = [products[i] for i in matched_indices]
+
+        return jsonify({"matches": matches})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(port=5001)
+    app.run(port=5001, debug=True)

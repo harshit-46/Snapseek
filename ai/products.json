@@ -1,22 +1,26 @@
 [
     {
+        "image": "Boat_Airdopes_121_Pro_Plus.jpg",
+        "name": "Boat airdopes 121 pro plus",
+        "price": "₹1199",
+        "url": "https://www.amazon.in/dp/B0D49ZS9MT/ref=twister_B0F8P2RZVF?_encoding=UTF8&psc=1"
+    },
+    {
         "image": "minimalist_vitamin_b5.jpg",
-        "name": "Minimalist Vitamin B5 Moisturizer",
+        "name": "Minimalist vitamin b5 moisturizer",
         "price": "₹331",
         "url": "https://www.amazon.in/Minimalist-Vitamin-Absorbing-Lightweight-Moisturizer/dp/B09Q3MWP2S/?_encoding=UTF8&ref_=pd_hp_d_atf_dealz_sv"
     },
     {
-        "id": "product2",
-        "name": "Classic Canvas Backpack",
-        "price": "₹1,499",
-        "image": "product2.jpg",
-        "url": "https://example.com/product2"
+        "image": "Zebronics_keyboard.jpg",
+        "name": "Zebronics wireless keyboard",
+        "price": "₹799",
+        "url": "https://www.amazon.in/gp/product/B0CNRSRMYN/ref=ewc_pr_img_1?smid=AJ6SIZC8YQDZX"
     },
     {
-        "id": "product3",
-        "name": "Black Office Tote",
-        "price": "₹2,499",
-        "image": "product3.jpg",
-        "url": "https://example.com/product3"
+        "image": "Zebronics_Pulse_Wireless_Mouse.jpg",
+        "name": "Zebronics pulse wireless mouse",
+        "price": "₹399",
+        "url": "https://www.amazon.in/gp/product/B0CSPJ5CFH/ref=ox_sc_saved_image_1?smid=AJ6SIZC8YQDZX"
     }
 ]
