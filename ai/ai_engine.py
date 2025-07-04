@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import faiss, json, numpy as np
-from PIL import Image
+from PIL import Image, UnidentifiedImageError
 import torch
 from io import BytesIO
 from model_utils import load_clip_model
@@ -9,8 +9,10 @@ from model_utils import load_clip_model
 app = Flask(__name__)
 CORS(app)
 
+# Load CLIP model
 model, preprocess, device = load_clip_model()
 
+# Load product metadata and vector index
 try:
     with open("products.json", "r", encoding="utf-8") as f:
         products = json.load(f)
@@ -33,14 +35,33 @@ def match_image():
         return jsonify({"error": "Empty filename"}), 400
 
     try:
-        img = preprocess(Image.open(BytesIO(file.read())).convert("RGB")).unsqueeze(0).to(device)
-        with torch.no_grad():
-            query_vec = model.encode_image(img).cpu().numpy().astype("float32")
+        # Read and preprocess image
+        img = Image.open(BytesIO(file.read())).convert("RGB")
+        img_tensor = preprocess(img).unsqueeze(0).to(device)
 
-        _, indices = index.search(query_vec, k=5)
+        # Encode image using CLIP
+        with torch.no_grad():
+            query_vec = model.encode_image(img_tensor).cpu().numpy().astype("float32")
+
+        # Search for top 5 similar vectors
+        distances, indices = index.search(query_vec, k=5)
+
+        # Get matched products
         matches = [products[i] for i in indices[0]]
 
-        return jsonify({"matches": matches})
+        # Remove duplicates based on image name
+        seen = set()
+        unique_matches = []
+        for product in matches:
+            if product["image"] not in seen:
+                unique_matches.append(product)
+                seen.add(product["image"])
+
+        print("Matched:", [p["name"] for p in unique_matches])  # Optional logging
+        return jsonify({"matches": unique_matches})
+
+    except UnidentifiedImageError:
+        return jsonify({"error": "Unsupported or corrupted image"}), 400
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
