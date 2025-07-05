@@ -10,12 +10,6 @@ const Results = ({ product }) => {
                 alt={product.name}
                 className="w-full h-40 object-contain mb-4"
             />
-            <iframe
-                src="https://huggingface.co/datasets/rajuptvs/ecommerce_products_clip/embed/viewer/default/train"
-                frameborder="0"
-                width="100%"
-                height="560px"
-            ></iframe>
             <h3 className="text-lg font-semibold">{product.name}</h3>
             <p className="text-green-600 font-bold">{product.price}</p>
             <a
